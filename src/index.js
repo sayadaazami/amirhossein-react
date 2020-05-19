@@ -1,14 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
-import Header from "./Header";
-import Footer from "./Footer";
+import App from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    {Header}
-    <p>dasdasdas</p>
-    {Footer}
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -1,3 +1,5 @@
 import React from "react";
 
-export default React.createElement("footer", {}, "this is footer");
+export default function () {
+  return <footer>this is footer</footer>;
+}
