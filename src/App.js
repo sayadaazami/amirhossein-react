@@ -1,67 +1,33 @@
 import React from "react";
+// import Component1 from "./Component1";
+// import TestWillUnmount from "./TestWillUnmount";
+import StateFullFunctionComponent from "./StateFullFunctionComponent";
 
 export default class App extends React.Component {
   state = {
-    value: 0,
-    otherValue: this.props.name,
+    name: "armin",
+    age: 23,
+    showUnmount: true,
   };
-
-  incValue = () => this.setState((state) => ({ value: state.value + 1 }));
-
-  resetValue = () => this.setState({ value: 0 });
-
-  constructor(props) {
-    super(props);
-
-    console.log("constructor");
-  }
-
-  componentWillMount() {
-    console.log("componentWillMount");
-  }
 
   render() {
     return (
       <section>
-        <header>
-          <h1>{this.props.name}</h1>
-        </header>
+        {/* <Component1 name={this.state.name} age={this.state.age} />
+        <button onClick={() => this.setState({ name: "elahe" })}>
+          change name
+        </button>
 
-        <div>value: {this.state.value}</div>
-        <div>otherValue: {this.state.otherValue}</div>
+        <button onClick={() => this.setState({ age: 24 })}>change age</button> */}
 
-        <button onClick={this.incValue}>inc</button>
-        <button onClick={this.resetValue}>reset</button>
-        <button onClick={() => this.forceUpdate()}>force</button>
+        {/* {this.state.showUnmount ? <TestWillUnmount /> : null}
+
+        <button onClick={() => this.setState({ showUnmount: false })}>
+          remove testUnmountComponent
+        </button> */}
+
+        <StateFullFunctionComponent />
       </section>
     );
-  }
-
-  componentDidMount() {
-    console.log("componentDidMount");
-    //کل api ها اینجا صدا زده میشه
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps", nextProps);
-  }
-
-  shouldComponentUpdate(nextProps, nextStates) {
-    console.log("shouldComponentUpdate", nextProps, nextStates);
-
-    return true;
-  }
-
-  componentWillUpdate(nextProps, nextStates) {
-    console.log("componentWillUpdate", nextProps, nextStates);
-  }
-
-  componentDidUpdate(prevProps, prevStates) {
-    console.log("componentDidUpdate", prevProps, prevStates);
-    //کل api ها اینجا صدا زده میشه
-  }
-
-  componentWillUnmount() {
-    console.log("componentWillUnmount");
   }
 }
