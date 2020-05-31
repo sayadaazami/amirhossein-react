@@ -1,13 +1,12 @@
 import React from "react";
-import MemoHook from "./MemoHook";
+import TaskList from "./components/TaskList";
+
+import "./globalStyles.css";
 
 function App() {
   return (
     <div className="App">
-      <h1>App</h1>
-
-      {/* <RefHook /> */}
-      <MemoHook />
+      <TaskList />
     </div>
   );
 }
