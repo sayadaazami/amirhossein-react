@@ -10,21 +10,37 @@ const store = createStore(
   })
 );
 
-function customDispatch(action) {
-  // before
-  console.log("before", action, store.getState());
+function overrideDispatch(func) {
+  const oldDispatch = store.dispatch;
 
-  store.dispatch(action);
-
-  // after
-  console.log("after", store.getState());
+  store.dispatch = (action) => func(action, oldDispatch);
 }
 
-customDispatch(counter.actions.INC());
+overrideDispatch(function (action, oldDispatch) {
+  // before
+  console.log("before1", action, store.getState());
+
+  oldDispatch(action);
+
+  // after
+  console.log("after1", store.getState());
+});
+
+overrideDispatch(function (action, oldDispatch) {
+  // before
+  console.log("before2", action, store.getState());
+
+  oldDispatch(action);
+
+  // after
+  console.log("after2", store.getState());
+});
+
 store.dispatch(counter.actions.INC());
-customDispatch(counter.actions.ADD(5));
-customDispatch(users.actions.ADD_USER({ id: 18, name: "elahe", age: 50 }));
-customDispatch(users.actions.DELETE_USER(1));
-customDispatch(counter.actions.SUB(3));
-customDispatch(global.actions.RESET());
-customDispatch(counter.actions.INC());
+store.dispatch(counter.actions.INC());
+store.dispatch(counter.actions.ADD(5));
+store.dispatch(users.actions.ADD_USER({ id: 18, name: "elahe", age: 50 }));
+store.dispatch(users.actions.DELETE_USER(1));
+store.dispatch(counter.actions.SUB(3));
+store.dispatch(global.actions.RESET());
+store.dispatch(counter.actions.INC());
