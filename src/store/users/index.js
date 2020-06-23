@@ -1,25 +1,35 @@
-import { actions as globalActions } from "../global";
-
-const userActionNames = {
-  ADD_USER: "ADD_USER",
-  DELETE_USER: "DELETE_USER",
+export const userActionNames = {
+  GET_USERS: "GET_USERS",
+  GET_USERS_SUCCESS: "GET_USERS_SUCCESS",
+  GET_USERS_FAIL: "GET_USERS_FAIL",
 };
 
-const initState = [{ id: 1, name: "sayad", age: 31 }];
+const initState = {
+  loading: false,
+  data: [],
+  error: null,
+};
 
 export const actions = {
-  ADD_USER: (user) => ({ type: userActionNames.ADD_USER, user }),
-  DELETE_USER: (id) => ({ type: userActionNames.DELETE_USER, id }),
+  getUsers: () => {
+    return { type: userActionNames.GET_USERS };
+  },
+  getUsersSuccess: (data) => {
+    return { type: userActionNames.GET_USERS_SUCCESS, data };
+  },
+  getUsersFail: (error) => {
+    return { type: userActionNames.GET_USERS_FAIL, error };
+  },
 };
 
 export const reducer = (state = initState, action) => {
   switch (action.type) {
-    case globalActions.RESET:
-      return initState;
-    case userActionNames.ADD_USER:
-      return [...state, action.user];
-    case userActionNames.DELETE_USER:
-      return state.filter((item) => item.id !== action.id);
+    case userActionNames.GET_USERS:
+      return { data: [], error: null, loading: true };
+    case userActionNames.GET_USERS_SUCCESS:
+      return { data: action.data, error: null, loading: false };
+    case userActionNames.GET_USERS_FAIL:
+      return { data: state.data, error: action.error, loading: false };
     default:
       return state;
   }
