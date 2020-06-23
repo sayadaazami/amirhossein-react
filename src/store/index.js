@@ -10,31 +10,33 @@ const store = createStore(
   })
 );
 
-function overrideDispatch(func) {
-  const oldDispatch = store.dispatch;
-
-  store.dispatch = (action) => func(action, oldDispatch);
+function overrideDispatch(functions) {
+  functions.reverse().forEach((func) => {
+    const oldDispatch = store.dispatch;
+    store.dispatch = (action) => func(action, oldDispatch);
+  });
 }
 
-overrideDispatch(function (action, oldDispatch) {
-  // before
-  console.log("before1", action, store.getState());
+overrideDispatch([
+  function (action, oldDispatch) {
+    // before
+    console.log("before1", action, store.getState());
 
-  oldDispatch(action);
+    oldDispatch(action);
 
-  // after
-  console.log("after1", store.getState());
-});
+    // after
+    console.log("after1", store.getState());
+  },
+  function (action, oldDispatch) {
+    // before
+    console.log("before2", action, store.getState());
 
-overrideDispatch(function (action, oldDispatch) {
-  // before
-  console.log("before2", action, store.getState());
+    oldDispatch(action);
 
-  oldDispatch(action);
-
-  // after
-  console.log("after2", store.getState());
-});
+    // after
+    console.log("after2", store.getState());
+  },
+]);
 
 store.dispatch(counter.actions.INC());
 store.dispatch(counter.actions.INC());
