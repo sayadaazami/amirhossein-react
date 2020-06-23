@@ -10,14 +10,21 @@ const store = createStore(
   })
 );
 
-store.subscribe(() => {
-  console.log(store.getState());
-});
+function customDispatch(action) {
+  // before
+  console.log("before", action, store.getState());
 
+  store.dispatch(action);
+
+  // after
+  console.log("after", store.getState());
+}
+
+customDispatch(counter.actions.INC());
 store.dispatch(counter.actions.INC());
-store.dispatch(counter.actions.ADD(5));
-store.dispatch(users.actions.ADD_USER({ id: 18, name: "elahe", age: 50 }));
-store.dispatch(users.actions.DELETE_USER(1));
-store.dispatch(counter.actions.SUB(3));
-store.dispatch(global.actions.RESET());
-store.dispatch(counter.actions.INC());
+customDispatch(counter.actions.ADD(5));
+customDispatch(users.actions.ADD_USER({ id: 18, name: "elahe", age: 50 }));
+customDispatch(users.actions.DELETE_USER(1));
+customDispatch(counter.actions.SUB(3));
+customDispatch(global.actions.RESET());
+customDispatch(counter.actions.INC());
