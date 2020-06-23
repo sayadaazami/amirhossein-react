@@ -1,42 +1,31 @@
-import { createStore, combineReducers } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import * as counter from "./counter";
-import * as users from "./users";
 import * as global from "./global";
+import * as users from "./users";
+
+const logger = (store) => (next) => (action) => {
+  console.log("before", action, store.getState());
+  const result = next(action);
+  console.log("after", store.getState());
+
+  return result;
+};
+
+const logger2 = (store) => (next) => (action) => {
+  console.log("before2", action, store.getState());
+  const result = next(action);
+  console.log("after2", store.getState());
+
+  return result;
+};
 
 const store = createStore(
   combineReducers({
     counter: counter.reducer,
     users: users.reducer,
-  })
+  }),
+  applyMiddleware(logger, logger2)
 );
-
-function overrideDispatch(functions) {
-  functions.reverse().forEach((func) => {
-    const oldDispatch = store.dispatch;
-    store.dispatch = (action) => func(action, oldDispatch);
-  });
-}
-
-overrideDispatch([
-  function (action, oldDispatch) {
-    // before
-    console.log("before1", action, store.getState());
-
-    oldDispatch(action);
-
-    // after
-    console.log("after1", store.getState());
-  },
-  function (action, oldDispatch) {
-    // before
-    console.log("before2", action, store.getState());
-
-    oldDispatch(action);
-
-    // after
-    console.log("after2", store.getState());
-  },
-]);
 
 store.dispatch(counter.actions.INC());
 store.dispatch(counter.actions.INC());
