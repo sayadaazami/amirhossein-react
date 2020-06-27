@@ -1,13 +1,21 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import reduxThunk from "redux-thunk";
 import * as users from "./users";
-import { getUsers, deleteUser } from "./users/thunk";
+import { deleteUser, getUsers } from "./users/thunk";
+
+const middlewares = [reduxThunk];
+const composeEnhancers =
+  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    : compose;
+
+const enhancer = composeEnhancers(applyMiddleware(...middlewares));
 
 export const store = createStore(
   combineReducers({
     users: users.reducer,
   }),
-  applyMiddleware(reduxThunk)
+  enhancer
 );
 
 // do this in another file or react component
