@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import { store } from "../../store";
 import { actions as userActions } from "../../store/users/actions";
+import { connect } from "react-redux";
 
-function UsersList() {
-  const [users, setUsers] = useState([]);
-
+function UsersList({ dispatch, users }) {
   function handleFetchUsers() {
-    store.subscribe(() => {
-      const reduxState = store.getState();
-      setUsers(reduxState.users.getUsers.data);
-    });
-
-    store.dispatch(userActions.getUsers());
+    dispatch(userActions.getUsers());
   }
 
   return (
@@ -27,4 +20,6 @@ function UsersList() {
   );
 }
 
-export default UsersList;
+export default connect((state) => ({
+  users: state.users.getUsers.data,
+}))(UsersList);

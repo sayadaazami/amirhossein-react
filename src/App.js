@@ -1,12 +1,16 @@
 import React from "react";
 import "./store";
 import UsersList from "./components/UsersList";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 function App() {
   return (
-    <div className="App">
-      <UsersList />
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <UsersList />
+      </div>
+    </Provider>
   );
 }
 
