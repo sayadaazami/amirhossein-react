@@ -8,6 +8,22 @@ export function getUsers() {
     Axios.get("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         dispatch(actions.getUsersSuccess(response.data));
+
+        Axios.delete("https://jsonplaceholder.typicode.com/users/" + id)
+          .then((response) => {
+            dispatch(actions.deleteUserSuccess(response.data));
+
+            Axios.delete("https://jsonplaceholder.typicode.com/users/" + id)
+              .then((response) => {
+                dispatch(actions.deleteUserSuccess(response.data));
+              })
+              .catch((error) => {
+                dispatch(actions.deleteUserFail(error));
+              });
+          })
+          .catch((error) => {
+            dispatch(actions.deleteUserFail(error));
+          });
       })
       .catch((error) => {
         dispatch(actions.getUsersFail(error));

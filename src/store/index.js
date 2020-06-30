@@ -1,9 +1,14 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import reduxThunk from "redux-thunk";
+// import reduxThunk from "redux-thunk";
+// import { deleteUser, getUsers } from "./users/thunk";
+import createSagaMiddleware from "redux-saga";
 import * as users from "./users";
-import { deleteUser, getUsers } from "./users/thunk";
+import { actions as userActions } from "./users/actions";
+import { userSagas } from "./users/saga";
 
-const middlewares = [reduxThunk];
+// const middlewares = [reduxThunk];
+const sagaMiddleware = createSagaMiddleware();
+const middlewares = [sagaMiddleware];
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
@@ -18,7 +23,11 @@ export const store = createStore(
   enhancer
 );
 
-// do this in another file or react component
-store.subscribe(() => console.log(store.getState()));
-store.dispatch(getUsers());
-store.dispatch(deleteUser(1));
+sagaMiddleware.run(userSagas);
+
+store.dispatch(userActions.getUsers());
+store.dispatch(userActions.deleteUser(1));
+// // do this in another file or react component
+// store.subscribe(() => console.log(store.getState()));
+// store.dispatch(getUsers());
+// store.dispatch(deleteUser(1));
