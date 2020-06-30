@@ -1,25 +1,34 @@
 import React, { useState } from "react";
 import { actions as userActions } from "../../store/users/actions";
-import { connect } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 
-function UsersList({ dispatch, users }) {
+function UsersList() {
+  const users = useSelector((state) => state.users.getUsers);
+  const dispatch = useDispatch();
+
+  console.log(users);
+
   function handleFetchUsers() {
     dispatch(userActions.getUsers());
   }
 
   return (
     <section>
-      <button onClick={handleFetchUsers}>Fetch</button>
+      <button disabled={users.loading} onClick={handleFetchUsers}>
+        {users.loading ? "Loading..." : "Fetch"}
+      </button>
 
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>{user.name}</li>
-        ))}
-      </ul>
+      {users.data && (
+        <ul>
+          {users.data.map((user) => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      )}
+
+      {users.error && <h2>{users.error.toString()}</h2>}
     </section>
   );
 }
 
-export default connect((state) => ({
-  users: state.users.getUsers.data,
-}))(UsersList);
+export default UsersList;
